@@ -20,3 +20,10 @@
 1. Code: `git rev-parse main` and `git cat-file -t main`
 2. Output: `cc72c37b04597b67198ca5c11085492da30f57f7` and `commit`
 3. A branch is not a directory, but a named reference that stores a 40-character commit object ID. Running `git rev-parse main` resolves the branch reference name `main` directly to its underlying commit hash. This demonstrates that the branch reference acts as a pointer to a specific commit object within the repository graph.
+
+tree e0adf59fff193c073cafe2114d53803739a43b7c
+parent 95cadcebfdc66c5f10fa40d84ee5ab65c92d9648
+author Lucas Swearingen <swearingenl1@udayton.edu> 1789691371 -0400
+committer Lucas Swearingen <swearingenl1@udayton.edu> 1789691371 -0400
+
+Added Part 1: Claims 1 and 2
