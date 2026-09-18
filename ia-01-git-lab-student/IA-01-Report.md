@@ -39,4 +39,13 @@ Added Part 1: Claims 1 and 2
 
 1. Code: `git log --graph --oneline --decorate --all`
 2. Output: 
+```
+* 0f9a8b4 (feature/validation) Add validation tests
+* 04ec968 Add timeout validation
+| * cc72c37 (HEAD -> main) Update README
+| * bd77aab Add logging
+|/  
+* 633624a Add configuration loader
+* 2b79f25 Initialize project
+```
 3. 
