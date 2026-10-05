@@ -46,11 +46,11 @@
 *   **DEL-01 (Statement of Work):** `docs/statement-of-work.md` 
     - Bounded project agreement defining purpose, scope, deliverables, Gantt schedule, and acceptance criteria.
 *   **DEL-02 (Requirements Engineering Document):** `docs/requirements.md`
-    - 
+    - tba
 *   **DEL-03 (System Diagrams &amp; Analysis):** `docs/analysis.md` `docs/diagrams/data-flow.puml` `docs/diagrams/sequence.puml` 
-    - 
+    - tba
 *   **DEL-04 (Ethics Reflection):** `docs/ethics-reflection.md`
-    - 
+    - tba
 *   **DEL-05 (Executable Messenger Software System):** Complete, verified executable product
     - Executable application and clean setup/run instructions.
 
@@ -59,12 +59,15 @@
 *   **Assumptions:** 
     * **ASM-01 (Max Group Membership Capacity):** Initial channel capacity is assumed to be capped at 50 users per group.  
     * **ASM-02 (Message Payload Size Limit):** Individual text messages are assumed to be capped at 2,000 UTF-8 characters.  
+    * **ASM-03** (Development Tech Stack & Language): Programming language is undetermined and is assumed to be announced by the instructor. 
 *   **Constraints:**
     * **CON-01 (Final Delivery Deadline):** The complete, verified Messenger system must be delivered no later than **November 2, 2026**.
     * **CON-02 (Assignment Artifacts Deadline):** Submission of repository documentation (`IA-02` through `IA-05`) must be pushed to GitHub no later than **October 12, 2026**.
     * **CON-03 (Submission Platform):** The submission record is strictly defined by commits pushed to the assigned GitHub course repository before the deadline.
     * **CON-04 (Diagram Format Standard):** Diagrams must be written as readable text-based source code under `docs/diagrams/`.
-*   **Dependencies:** [External decisions, platforms, or tools required for execution] 
+*   **Dependencies:** 
+    * **DEP-01** (GitHub Infrastructure): Continuous access to GitHub remote servers for version control pushing.
+    * **DEP-02** (Development Tech Stack): Availability of the selected tech stack (determined via ASM-03).
 
 ## 6. Milestones and Schedule
 
@@ -72,11 +75,15 @@
 
 | Milestone ID | Description | Target Completion Date |
 | :--- | :--- | :--- |
-| **MS-01** | Statement of Work &amp; Requirements Sign-off | [Date] |
-| **MS-02** | Diagrams &amp; Behavioral Modeling Complete | [Date] |
-| **MS-03** | Core Direct &amp; Group Messaging Verification | [Date] |
-| **MS-04** | Integration &amp; Final Readiness Review | [Target date prior to Nov 2] [16, 19] |
-| **MS-05** | Final Product Delivery Deadline | **November 2, 2026** [16, 19] |
+| **MS-01** | Statement of Work | October 3, 2026 |
+| **MS-02** | Requirements Engineering | October 5, 2026|
+| **MS-03** | Diagrams &amp; Analysis | October 7, 2026 |
+| **MS-04** | Ethics Reflection &amp; Complete Artifacts| October 12, 2026 |
+| **MS-05** | User Authentication Implementation | October 18, 2026 |
+| **MS-06** | Direct &amp; Group Messaging Implementation | October 24, 2026 |
+| **MS-07** | System Integration &amp; Code Review | October 28, 2026 |
+| **MS-08** | Final Product Testing &amp; Readiness Review | October 30, 2026 |
+| **MS-09** | Final Product Delivery Deadline | **November 2, 2026** |
 
 ### Project Schedule (Gantt Chart)
 
@@ -84,20 +91,27 @@
 gantt
     title Messenger Project Schedule
     dateFormat  YYYY-MM-DD
-    section Scoping &amp; Requirements
-    Statement of Work               :a1, 2026-09-30, 2026-10-05
-    Requirements Engineering        :a2, 2026-10-01, 2026-10-08
-    section Modeling &amp; Ethics
-    DFD &amp; Sequence Diagrams         :b1, 2026-10-06, 2026-10-12
-    Ethics Impact Analysis          :b2, 2026-10-08, 2026-10-12
-    section Implementation &amp; Verification
-    System Development              :c1, 2026-10-12, 2026-10-25
-    Integration &amp; Verification      :c2, 2026-10-25, 2026-10-30
+    section Artifacts
+    Statement of Work               :a1, 2026-09-30, 2026-10-04
+    Requirements                    :a2, 2026-10-03, 2026-10-06
+    Analysis & Sequence Diagrams    :a3, 2026-10-05, 2026-10-09
+    Ethics & Review                 :a4, 2026-10-08, 2026-10-12
+    Artifacts Submission            :milestone, m1, 2026-10-12, 0d
+    section Implementation & Testing
+    User Authentication             :b1, 2026-10-12, 2026-10-18
+    Group & Direct                  :b2, 2026-10-16, 2026-10-24
+    Integration & Testing           :b3, 2026-10-23, 2026-10-30
+    Debugging & Finalization        :b4, 2026-10-30, 2026-11-02
     section Delivery
-    Final Delivery Milestone        :milestone, m1, 2026-11-02, 0d
+    Final Delivery                  :milestone, m2, 2026-11-02, 0d
 ```
 
 ## 7. Acceptance Criteria
 
-* **AC-01:** System deliverables satisfy all documented functional requirements via observable test evidence[7][12].
-* **AC-02:** All artifacts are committed, correctly formatted, and pushed to required paths in GitHub[1][13].
+| Target Deliverable | Starting State | Action | Result |
+| :--- | :--- | :--- | :--- |
+| AC-01 (Account Auth) | User "Alice" is unregistered | Alice registers with valid password | System creates account, stores password, and returns success token |
+| AC-02 (Direct Messaging) | Alice and Bob are registered users | Alice sends message to Bob | Bob's receives message with Alice's sender ID |
+| AC-03 (Group Messaging) |	Alice, Bob, and Charlie are registered users | Alice creates group "Project Team" and sends a message to the group | Both Bob and Charlie receive the message in their group channel feed |
+| AC-04 (Message Persistence) | Messages exist in direct and group chats; system server is restarted | User logs back in after system reboot | Messages load chronologically with zero message loss or corruption |
+| AC-05 (Repository Submission) | Final markdown and PlantUML files are committed locally | Developer executes git push to class repo | Required files appear at exact paths under docs/ on GitHub |
