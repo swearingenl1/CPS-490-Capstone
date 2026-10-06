@@ -1,11 +1,25 @@
 # Requirements Engineering Specification: Messenger System
 
+**Project:** CPS 490 Capstone I — Messenger  
+**Author:** Lucas Swearingen
+**Faculty Mentor:** Nick Stiffler  
+**Target Submission Path:** `docs/requirements.md`  
+**Assignment Due Date:** October 12, 2026  
+**Final System Delivery Deadline:** November 2, 2026
+
 ## 1. System Context
 
-*   **System Boundary:** Defines the operational limits of the Messenger application.
+*   **System Boundary:** The Messenger system is a lightweight, secure text communication system that enables authenticated direct and multi-user group messaging. The system boundary encompasses:
+    * User Client Interface: The application interface through which end-users write, send, and view messages.
+    * Data Persistence Subsystem: The persistent data store containing user account records, passwords, group membership rosters, and chronological chat message logs.
+
 *   **Actors and External Systems:**
-    *   **User:** Registered individual interacting via the messaging client interface.
-    *   **Data Store:** Persistent store for user accounts, channel memberships, and message logs.
+
+| Actor / External Entity | Category | Description & System Interaction Boundary |
+| :--- | :--- | :--- |
+| **Registered User** | Human Actor | Primary operator who registers an account, authenticates, sends/receives direct text messages, creates/joins group channels, and views message history. |
+| **Group Creator / Admin** | Human Actor | A registered user who creates a group messaging channel, manages member invitations/removals, and holds channel administration privileges. |
+| **Data Store** | Internal Subsystem | Storage layer that maintains records of credentials, rosters, and message archives across system restarts. |
 
 ## 2. Functional Requirements
 
@@ -34,7 +48,7 @@
 *   **Unresolved Stakeholder Questions:** [e.g., What is the maximum permitted member capacity per group?] [26].
 *   **Ambiguities / Conflicts:** [e.g., Balancing offline message retention limits against storage constraints] [26].
 
-## 6. Traceability Matrix
+## 6. Traceability
 
 | Requirement ID | Source / Rationale | Target Subsystem / Component |
 | :--- | :--- | :--- |
