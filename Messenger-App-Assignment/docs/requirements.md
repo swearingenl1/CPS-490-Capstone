@@ -23,16 +23,21 @@
 
 ## 2. Functional Requirements
 
-*   **FR-01 (User Registration):** The system shall enable new users to create an account with a unique identifier [24].
-*   **FR-02 (Direct Messaging):** The system shall allow a registered user to transmit a direct text message to another registered user [24, 25].
-*   **FR-03 (Group Messaging):** The system shall allow registered users to create messaging groups and send messages to all group members [24, 25].
-*   **FR-04 (Message Retrieval):** The system shall allow users to retrieve historical direct and group messages [24].
+*   **FR-01 (Account Registration):** The system shall enable new users to register a user account by providing a unique username and a secure password.
+*   **FR-02 (User Authentication &amp; Session Management):** The system shall authenticate returning users by verifying submitted passwords against stored passwords prior to granting access to messaging functions.
+*   **FR-03 (Session Logout):** The system shall allow an authenticated user to terminate their active session, revoking active messaging session state.
+*   **FR-04 (Direct Message Transmission):** The system shall allow an authenticated user to transmit a direct message to another designated registered user.
+*   **FR-06 (Group Channel Creation):** The system shall allow an authenticated user to create a named group messaging channel and automatically assign that user as the Group Creator.
+*   **FR-06 (Group Membership Management):** The system shall allow the Group Creator to add or remove registered users from the group channel roster.
+*   **FR-07 (Group Message Broadcasting):** The system shall distribute messages posted to a group channel to all current active members of that group.
+*   **FR-08 (Durable Storage Persistence):** The system shall commit all user records, group rosters, and transmitted messages to persistent disk storage immediately upon transaction confirmation.
 
 ## 3. Non-Functional Requirements
 
-*   **NFR-01 (Delivery Latency):** The system shall deliver direct messages to online recipients within 500ms under normal operating conditions [24].
-*   **NFR-02 (Data Persistence):** User account records and chat histories shall persist across application restarts [24].
-*   **NFR-03 (Credential Security):** The system shall store user credentials using salted password hashing [24].
+*   **NFR-01 (Delivery Latency):** Under normal operating conditions, the system shall deliver direct and group messages to online recipients within **i second** of sending.
+*   **NFR-02 (Data Persistence &amp; Recovery Integrity):** All registered user account profiles, group membership rosters, and chat logs shall persist across system reboots with **0% message loss or data corruption**.
+*   **NFR-03 (Transport Layer Security):** All network communication between messaging clients and the messaging broker shall utilize transport layer encryption (TLS / SSL) to prevent plaintext packet sniffing.
+*   **NFR-04 (Zero External Paid Service Dependency):** The system implementation shall rely entirely on open-source libraries and local infrastructure without requiring paid subscriptions or third-party proprietary services.
 
 ## 4. Acceptance Criteria
 
