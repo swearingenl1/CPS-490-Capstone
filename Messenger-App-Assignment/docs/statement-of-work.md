@@ -46,7 +46,7 @@
 *   **DEL-01 (Statement of Work):** `docs/statement-of-work.md` 
     - Bounded project agreement defining purpose, scope, deliverables, Gantt schedule, and acceptance criteria.
 *   **DEL-02 (Requirements Engineering Document):** `docs/requirements.md`
-    - tba
+    - Testable functional and non-functional requirements with acceptance criteria andV traceability mapping.
 *   **DEL-03 (System Diagrams &amp; Analysis):** `docs/analysis.md` `docs/diagrams/data-flow.puml` `docs/diagrams/sequence.puml` 
     - tba
 *   **DEL-04 (Ethics Reflection):** `docs/ethics-reflection.md`
@@ -58,8 +58,7 @@
 
 *   **Assumptions:** 
     * **ASM-01 (Max Group Membership Capacity):** Initial channel capacity is assumed to be capped at 50 users per group.  
-    * **ASM-02 (Message Payload Size Limit):** Individual text messages are assumed to be capped at 2,000 UTF-8 characters.  
-    * **ASM-03** (Development Tech Stack & Language): Programming language is undetermined and is assumed to be announced by the instructor. 
+    * **ASM-02** (Development Tech Stack & Language): Programming language is undetermined and is assumed to be announced by the instructor. 
 *   **Constraints:**
     * **CON-01 (Final Delivery Deadline):** The complete, verified Messenger system must be delivered no later than **November 2, 2026**.
     * **CON-02 (Assignment Artifacts Deadline):** Submission of repository documentation (`IA-02` through `IA-05`) must be pushed to GitHub no later than **October 12, 2026**.
