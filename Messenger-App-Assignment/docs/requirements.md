@@ -11,7 +11,7 @@
 
 *   **System Boundary:** The Messenger system is a lightweight, secure text communication system that enables authenticated direct and multi-user group messaging. The system boundary encompasses:
     * User Client Interface: The application interface through which end-users write, send, and view messages.
-    * Data Persistence Subsystem: The persistent data store containing user account records, passwords, group membership rosters, and chronological chat message logs.
+    * Data Persistence Subsystem: The persistent data store containing user account records, salted password hashes, group membership rosters, and chronological chat message logs.
 
 *   **Actors and External Systems:**
 
@@ -24,7 +24,7 @@
 ## 2. Functional Requirements
 
 *   **FR-01 (Account Registration):** The system shall enable new users to register a user account by providing a unique username and a secure password.
-*   **FR-02 (User Authentication &amp; Session Management):** The system shall authenticate returning users by verifying submitted passwords against stored passwords prior to granting access to messaging functions.
+*   **FR-02 (User Authentication &amp; Session Management):** The system shall authenticate returning users by verifying submitted passwords against stored salted password hashes prior to granting access to messaging functions.
 *   **FR-03 (Session Logout):** The system shall allow an authenticated user to terminate their active session.
 *   **FR-04 (Direct Message Transmission):** The system shall allow an authenticated user to transmit a direct message to another designated registered user.
 *   **FR-06 (Group Channel Creation):** The system shall allow an authenticated user to create a named group messaging channel and automatically assign that user as the Group Creator.
@@ -38,6 +38,7 @@
 *   **NFR-02 (Data Persistence &amp; Recovery Integrity):** All registered user account profiles, group membership rosters, and chat logs shall persist across system reboots with **0% message loss or data corruption**.
 *   **NFR-03 (Transport Layer Security):** All network communication between messaging clients and the messaging broker shall utilize transport layer encryption (TLS / SSL) to prevent plaintext packet sniffing.
 *   **NFR-04 (Zero External Paid Service Dependency):** The system implementation shall rely entirely on open-source libraries and local infrastructure without requiring paid subscriptions or third-party proprietary services.
+*   **NFR-05 (Credential Security):** User passwords shall never be stored or logged in plain text. Credentials at rest must be protected using a salted cryptographic hashing algorithm.
 
 ## 4. Acceptance Criteria
 
@@ -53,7 +54,7 @@
 
 **Group Channel Creation &amp; Message Transmission:**
     *Given:** `"alice"` creates a group, `"CS Capstone"`, with members `"bob"`, and `"charlie"`. User `"eve"` is not a member.
-    **When:** `"alice"` posts `"Code freeze tonight"` to `"CS Capstone"`.
+    **When:** `"alice"` posts `"Code due tonight"` to `"CS Capstone"`.
     **Then:** Both `"bob"` and `"charlie"` receive the message in their group feeds, while `"eve"` receives zero notifications and cannot view the message.
 
 **Message Latency &amp; Message Store:**
@@ -63,16 +64,30 @@
 
 ## 5. Assumptions and Unresolved Questions
 
-    **Assumptions:** [e.g., Users possess steady network connectivity during active sessions] [26].
-        * 
-    **Unresolved Stakeholder Questions:** [e.g., What is the maximum permitted member capacity per group?] [26].
-    **Ambiguities / Conflicts:** [e.g., Balancing offline message retention limits against storage constraints] [26].
+**Assumptions:**
+    * **Internal Authentication:** User identities and passwords are managed internally in the local database without external campus log in integration.
+    * **Network Connectivity:** End users possess steady network connectivity (TCP/IP socket connection) during active messaging sessions.
+**Unresolved Stakeholder Questions:**
+    * **Maximum Group Capacity:** What is the exact maximum permitted member capacity per group channel (currently assumed at 100 users)?
+    * **Group Creator Departure Policy:** If a Group Creator deletes their account or leaves a group channel, should channel administration transfer automatically to the oldest remaining member, or should the channel lock into read-only mode?
+    * **Offline Message Expiration Window:** Should unread offline messages persist indefinitely in the database, or should unretrieved messages expire after a fixed retention window (e.g., 30 days)?
+**Ambiguities / Conflicts:** 
+    * **Disk Storage Constraints:** Retaining unlimited message history for users will conflict with local database storage constraints on host servers.
 
 ## 6. Traceability
 
-| Requirement ID | Source / Rationale | Target Subsystem / Component |
-| :--- | :--- | :--- |
-| **FR-01** | User Access Control Objective | Authentication Module [2] |
-| **FR-02** | Statement of Work In-Scope Capability [12] | Private Messaging Engine [2] |
-| **FR-03** | Statement of Work In-Scope Capability [12] | Group Channel Module [2] |
-| **NFR-03** | Security Constraint &amp; Ethical Risk Mitigation [27] | Auth &amp; Data Persistence Layer [2] |
+| Requirement ID | Requirement Name | Primary Source / Rationale | Target System Subsystem | Verification Method | 
+| :--- | :--- | :--- | :--- | :--- | 
+| **FR-01** | Account Registration | SOW `OBJ-01` (Secure Identity) &amp; In-Scope Feature 1 | Authentication Engine | Automated Unit Test &amp; Database Audit | 
+| **FR-02** | User Authentication &amp; Session Management | SOW `OBJ-01` &amp; In-Scope Feature 1 | Authentication Engine | Automated Authentication Test | 
+| **FR-03** | Session Logout | User Security / Session Boundary | Client Session Manager | Integration Test | 
+| **FR-04** | Direct Message Transmission | SOW `OBJ-02` (Direct Private Messaging) &amp; In-Scope Feature 2 | Direct Messaging Engine | Automated End-to-End Test | 
+| **FR-05** | Group Channel Creation | SOW `OBJ-03` (Group-Based Messaging Channels) &amp; In-Scope Feature 3 | Group Channel Subsystem | Automated Unit Test | 
+| **FR-06** | Group Membership Management | SOW `OBJ-03` &amp; `ASM-01` (50-User Capacity Cap) | Group Channel Subsystem | Roster Boundary Test (51st User) | 
+| **FR-07** | Group Message Broadcasting | SOW `OBJ-03` &amp; In-Scope Feature 3 | Group Channel Subsystem | Multi-Client Integration Test | 
+| **FR-08** | Durable Storage Persistence | SOW `OBJ-04` (Message Persistence &amp; History) &amp; In-Scope Feature 4 | Persistent Data Store | System Reboot Recovery Test | 
+| **NFR-01** | Delivery Latency (&lt;1s) | SOW Acceptance Criteria `AC-02` / Performance Quality | Network Broker / Transport | Automated Latency Benchmark (&lt;1s) | 
+| **NFR-02** | Data Persistence &amp; Recovery Integrity | SOW Reliability Requirement &amp; Acceptance Criteria `AC-04` | Persistent Data Store | Hard Crash &amp; Reboot Recovery Audit | 
+| **NFR-03** | Transport Layer Security | SOW Security &amp; System Context Boundary | Network Protocol Layer | Wireshark / Packet Inspection Audit | 
+| **NFR-04** | Zero External Paid Service Dependency | Course Constraint / No Paid Services Requirement | System Dependencies | Open-Source License &amp; Dependency Audit |
+| **NFR-05** | Credential Security | SOW Security &amp; Ethics | Credential Hashing Module | Hash Inspection &amp; DB Audit |

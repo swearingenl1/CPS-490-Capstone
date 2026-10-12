@@ -30,7 +30,7 @@
 
 ### In-Scope Functionality
 
-*   Feature 1: **User Registration &amp; Authentication:** Account creation, unique user ID assignment, password strength requirement, and session login/logout verification.
+*   Feature 1: **User Registration &amp; Authentication:** Account creation, unique user ID assignment, password strength requirement, salted password hashing, and session login/logout verification.
 *   Feature 2: **Private Direct Messaging:** Asynchronous and real-time 1-on-1 text message transmission between registered users.
 *   Feature 3: **Group Messaging Channels:** Creation of group channels, member invitation/removal, and multi-user message distribution.
 *   Feature 4: **Persistent Message History:** Storing direct and group messages in a database with chronological query capabilities.
@@ -109,8 +109,8 @@ gantt
 
 | Target Deliverable | Starting State | Action | Result |
 | :--- | :--- | :--- | :--- |
-| AC-01 (Account Auth) | User "Alice" is unregistered. | Alice registers with valid password. | System creates account, stores password, and returns success token. |
+| AC-01 (Account Auth) | User "Alice" is unregistered. | Alice registers with valid password. | System creates account, stores salted password hash, and returns success token. |
 | AC-02 (Direct Messaging) | Alice and Bob are registered users. | Alice sends message to Bob. | Bob's receives message with Alice's sender ID. |
 | AC-03 (Group Messaging) |	Alice, Bob, and Charlie are registered users. | Alice creates group "Project Team" and sends a message to the group. | Both Bob and Charlie receive the message in their group channel feed. |
 | AC-04 (Message Persistence) | Messages exist in direct and group chats; system server is restarted. | User logs back in after system reboot. | Messages load chronologically with zero message loss or corruption. |
-| AC-05 (Repository Submission) | Final markdown and PlantUML files are committed locally. | Developer executes git push to class repository. | Required files appear at exact paths under docs/ on GitHub. |
+| AC-05 (Repository Submission) | Final markdown and PlantUMLpasswords are committed locally. | Developer executes git push to class repository. | Required files appear at exact paths under docs/ on GitHub. |

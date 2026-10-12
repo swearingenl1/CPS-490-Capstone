@@ -1,0 +1,67 @@
+@startuml data-flow
+!theme plain
+skinparam ComponentStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+
+title Level-0 Data Flow Diagram (DFD) - Messenger System\nTarget File: docs/diagrams/data-flow.puml
+
+' ============================================================================
+' EXTERNAL ENTITIES
+' ============================================================================
+rectangle "Registered User\n(Client App)" as User <<External Entity>> #E2EFDA
+rectangle "Group Creator" as GroupAdmin <<External Entity>> #E2EFDA
+rectangle "Operating Host / Network" as HostEnv <<External Entity>> #E2EFDA
+
+' ============================================================================
+' PROCESSES
+' ============================================================================
+rectangle "1.0 Authenticate Session\n& Access Control\n(FR-01, FR-02)" as P1 <<Process>> #D9E1F2
+rectangle "2.0 Process & Route\nDirect Message\n(FR-04, FR-05)" as P2 <<Process>> #D9E1F2
+rectangle "3.0 Manage Group Channel\nRoster (FR-06)" as P3 <<Process>> #D9E1F2
+rectangle "4.0 Broadcast Group\nMessage (FR-07)" as P4 <<Process>> #D9E1F2
+
+' ============================================================================
+' DATA STORES
+' ============================================================================
+database "DS-1: User Credential Store\n(FR-01, FR-02, FR-08)" as DS1 <<Data Store>> #FFF2CC
+database "DS-2: Group Roster Store\n(FR-06, ASM-01)" as DS2 <<Data Store>> #FFF2CC
+database "DS-3: Persistent Message Store\n(FR-05, FR-07, FR-08, NFR-02)" as DS3 <<Data Store>> #FFF2CC
+
+' ============================================================================
+' DATA FLOWS
+' ============================================================================
+
+' Process 1.0 Flows (Authentication & Session)
+User --> P1 : Registration Request / Credentials (FR-01)
+User --> P1 : Authentication Request (Username + Password) (FR-02)
+P1 --> DS1 : Write User Record & Plain Credentials
+DS1 --> P1 : Query & Verify Password
+P1 --> User : Auth Token / Session Validation Status
+
+' Process 2.0 Flows (Direct Messaging)
+User --> P2 : Direct Message Payload (RecipientID, Text) (FR-04)
+P1 ..> P2 : Active Session Token
+P2 --> DS1 : Verify Recipient Identity
+P2 --> DS3 : Store Direct Message Record (UNREAD/READ) (FR-08)
+P2 --> User : Deliver Direct Message Payload to Recipient Client (FR-05)
+
+' Process 3.0 Flows (Group Management)
+GroupAdmin --> P3 : Create Channel / Modify Roster (FR-06)
+P1 ..> P3 : Active Session Token
+P3 --> DS2 : Write Channel Roster & Creator Records (Max 50 Members) (ASM-01)
+
+' Process 4.0 Flows (Group Broadcast)
+User --> P4 : Group Message Payload (GroupID, Text) (FR-07)
+P1 ..> P4 : Active Session Token
+P4 --> DS2 : Verify Sender Group Membership
+DS2 --> P4 : Fetch Active Member Roster
+P4 --> DS3 : Store Group Message Record (FR-08)
+P4 --> User : Broadcast Message Payload to Group Members (NFR-01)
+
+' System / Host Environment Flow
+HostEnv --> DS3 : Server Reboot State Preservation (FR-08, NFR-02)
+
+@enduml

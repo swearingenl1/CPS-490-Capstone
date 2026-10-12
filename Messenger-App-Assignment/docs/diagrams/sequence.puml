@@ -1,0 +1,82 @@
+@startuml sequence
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam BoxPadding 10
+skinparam ParticipantPadding 10
+
+title Sequence Diagram: Direct 1-on-1 Message Dispatch & Delivery\nTarget File: docs/diagrams/sequence.puml
+
+autonumber "<b>[00]</b>"
+
+actor "Sender\n(User A)" as Sender #E2EFDA
+participant "Messaging\nBroker API" as Broker #D9E1F2
+participant "Session &\nAuth Manager" as Auth #D9E1F2
+database "Persistent\nData Store" as DB #FFF2CC
+actor "Recipient\n(User B)" as Recipient #E2EFDA
+
+== Phase 1: Authentication & Session Verification ==
+Sender -> Broker : sendDirectMessage(recipientID="bob", payload="Hello Bob")
+activate Broker
+
+Broker -> Auth : validateSession(senderToken)
+activate Auth
+Auth --> Broker : SessionValid(senderID="alice")
+deactivate Auth
+
+== Phase 2: Recipient Verification ==
+Broker -> DB : queryUserExists("bob")
+activate DB
+DB --> Broker : UserRecordFound(userID="bob")
+deactivate DB
+
+alt Failure Path: Non-Existent Recipient (Invalid ID)
+    Broker --> Sender : 404 RECIPIENT_NOT_FOUND ("User 'bob' does not exist")
+    note right of Broker: Transaction aborted. Zero database writes executed.
+else Success / Alternative Delivery Paths
+
+    == Phase 3: Synchronous Persistence & Routing ==
+    Broker -> DB : insertMessageRecord(msgID=UUID, sender="alice", recipient="bob", payload="Hello Bob", status="UNREAD")
+    activate DB
+    DB --> Broker : WriteACK(msgID=UUID, timestamp=ServerTime)
+    deactivate DB
+
+    alt Main Success Path: Recipient Client Online
+        Broker -> Recipient : pushSocketPayload(msgID, sender="alice", payload="Hello Bob", timestamp)
+        activate Recipient
+        note over Broker, Recipient : NFR-01: Real-time socket delivery latency < 1.0 second
+        Recipient --> Broker : SocketACK(msgID)
+        deactivate Recipient
+        
+        Broker -> DB : updateMessageStatus(msgID, status="DELIVERED")
+        Broker --> Sender : 200 OK (Message Sent & Delivered)
+
+    else Alternative Path: Recipient Client Offline / Socket Disconnected
+        Broker -> Recipient : pushSocketPayload(msgID, sender="alice", payload="Hello Bob")
+        activate Recipient
+        Recipient -[hidden]-> Broker : Connection Timeout / Socket Offline
+        deactivate Recipient
+        
+        note right of Broker
+            Socket delivery timeout triggered.
+            Message remains persisted in DB with status='UNREAD' (FR-05).
+        end note
+        
+        Broker --> Sender : 200 OK (Message Sent, Queued for Offline Recipient)
+
+        == Phase 4: Subsequent Offline Recipient Login & Chronological Sync ==
+        Recipient -> Broker : authenticateUser("bob", password)
+        activate Broker
+        Broker -> DB : fetchUnreadMessages(userID="bob")
+        activate DB
+        DB --> Broker : ReturnUnreadLogs([msgID, "alice", "Hello Bob", timestamp])
+        deactivate DB
+        
+        Broker --> Recipient : deliverChronologicalHistory([msgID, "alice", "Hello Bob"])
+        deactivate Broker
+    end
+end
+
+deactivate Broker
+
+@enduml
