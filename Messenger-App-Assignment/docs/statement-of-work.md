@@ -48,7 +48,7 @@
 *   **DEL-02 (Requirements Engineering Document):** `docs/requirements.md`
     - Testable functional and non-functional requirements with acceptance criteria andV traceability mapping.
 *   **DEL-03 (System Diagrams &amp; Analysis):** `docs/analysis.md` `docs/diagrams/data-flow.puml` `docs/diagrams/sequence.puml` 
-    - tba
+    - PlantUML diagram source code for DFD and Sequence models, accompanied by written engineering analysis.
 *   **DEL-04 (Ethics Reflection):** `docs/ethics-reflection.md`
     - tba
 *   **DEL-05 (Executable Messenger Software System):** Complete, verified executable product.
