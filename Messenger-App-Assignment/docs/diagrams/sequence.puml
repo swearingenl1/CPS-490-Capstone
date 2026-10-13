@@ -59,7 +59,7 @@ else Success / Alternative Delivery Paths
         
         note right of Broker
             Socket delivery timeout triggered.
-            Message remains persisted in DB with status='UNREAD' (FR-05).
+            Message remains persisted in DB with status='UNREAD' (FR-04, FR-08).
         end note
         
         Broker --> Sender : 200 OK (Message Sent, Queued for Offline Recipient)
