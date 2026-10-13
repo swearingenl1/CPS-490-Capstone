@@ -50,7 +50,7 @@
 *   **DEL-03 (System Diagrams &amp; Analysis):** `docs/analysis.md` `docs/diagrams/data-flow.puml` `docs/diagrams/sequence.puml` 
     - PlantUML diagram source code for DFD and Sequence models, accompanied by written engineering analysis.
 *   **DEL-04 (Ethics Reflection):** `docs/ethics-reflection.md`
-    - tba
+    - Impact analysis, engineering mitigations, and human-in-the-loop AI assistance reflection.
 *   **DEL-05 (Executable Messenger Software System):** Complete, verified executable product.
     - Executable application and clean setup/run instructions.
 

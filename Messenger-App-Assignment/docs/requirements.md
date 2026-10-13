@@ -1,4 +1,4 @@
-# Requirements Engineering Specification: Messenger System
+# Requirements Engineering: Messenger System
 
 **Project:** CPS 490 Capstone I — Messenger  
 **Author:** Lucas Swearingen
@@ -68,7 +68,7 @@
     * **Internal Authentication:** User identities and passwords are managed internally in the local database without external campus log in integration.
     * **Network Connectivity:** End users possess steady network connectivity (TCP/IP socket connection) during active messaging sessions.
 **Unresolved Stakeholder Questions:**
-    * **Maximum Group Capacity:** What is the exact maximum permitted member capacity per group channel (currently assumed at 100 users)?
+    * **Maximum Group Capacity:** What is the exact maximum permitted member capacity per group channel (currently assumed at 50 users)?
     * **Group Creator Departure Policy:** If a Group Creator deletes their account or leaves a group channel, should channel administration transfer automatically to the oldest remaining member, or should the channel lock into read-only mode?
     * **Offline Message Expiration Window:** Should unread offline messages persist indefinitely in the database, or should unretrieved messages expire after a fixed retention window (e.g., 30 days)?
 **Ambiguities / Conflicts:** 
