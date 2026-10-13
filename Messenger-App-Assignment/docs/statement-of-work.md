@@ -66,7 +66,7 @@
     * **CON-04 (Diagram Format Standard):** Diagrams must be written as readable text-based source code under `docs/diagrams/`.
 *   **Dependencies:** 
     * **DEP-01** (GitHub Infrastructure): Continuous access to GitHub remote servers for version control pushing.
-    * **DEP-02** (Development Tech Stack): Availability of the selected tech stack (determined via ASM-03).
+    * **DEP-02** (Development Tech Stack): Availability of the selected tech stack (determined via ASM-02).
 
 ## 6. Milestones and Schedule
 
@@ -113,4 +113,4 @@ gantt
 | AC-02 (Direct Messaging) | Alice and Bob are registered users. | Alice sends message to Bob. | Bob's receives message with Alice's sender ID. |
 | AC-03 (Group Messaging) |	Alice, Bob, and Charlie are registered users. | Alice creates group "Project Team" and sends a message to the group. | Both Bob and Charlie receive the message in their group channel feed. |
 | AC-04 (Message Persistence) | Messages exist in direct and group chats; system server is restarted. | User logs back in after system reboot. | Messages load chronologically with zero message loss or corruption. |
-| AC-05 (Repository Submission) | Final markdown and PlantUMLpasswords are committed locally. | Developer executes git push to class repository. | Required files appear at exact paths under docs/ on GitHub. |
+| AC-05 (Repository Submission) | Final markdown and PlantUML files are committed locally. | Developer executes git push to class repository. | Required files appear at exact paths under docs/ on GitHub. |

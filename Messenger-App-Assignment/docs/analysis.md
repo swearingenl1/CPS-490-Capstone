@@ -18,10 +18,10 @@ The Data Flow Diagram directly models the information transformations and data s
 
 * **`FR-01` (Account Registration):** Input of user registration credentials from the `Registered User` external entity into Process `1.0 Authenticate Session & Access Control`.
 * **`FR-02` (User Authentication &amp; Session Management):** Verification of submitted username and password against `DS-1: User Credential Store`.
-* **`FR-04` (Direct Message Transmission) &amp; `FR-05` (Message Delivery &amp; Storage):** Routing 1-on-1 text payloads through Process `2.0 Process &amp; Route Direct Message` into `DS-3: Persistent Message Store` and dispatching to recipient clients.
-* **`FR-06` (Group Channel Creation &amp; Roster Management):** Processing channel creation requests and roster modifications through Process `3.0 Manage Group Channel Roster`, writing membership records to `DS-2: Group Roster Store`.
+* **`FR-04` (Direct Message Transmission) &amp; `FR-05` (Group Channel Creation):** Routing 1-on-1 text payloads through Process `2.0 Process &amp; Route Direct Message` into `DS-3: Persistent Message Store` and dispatching to recipient clients.
+* **`FR-06` (Group Membership Management):** Processing channel creation requests and roster modifications through Process `3.0 Manage Group Channel Roster`, writing membership records to `DS-2: Group Roster Store`.
 * **`FR-07` (Group Message Broadcasting):** Reading group membership lists from `DS-2` and broadcasting message payloads to active members via Process `4.0 Broadcast Group Message`.
-* **`FR-08` (Durable Storage Persistence) &amp; `NFR-02` (Persistence Integrity):** Committing all account records, group rosters, and chat logs to persistent disk stores (`DS-1`, `DS-2`, `DS-3`).
+* **`FR-08` (Durable Storage Persistence) &amp; `NFR-02` (Data Persistence &amp; Recovery Integrity):** Committing all account records, group rosters, and chat logs to persistent disk stores (`DS-1`, `DS-2`, `DS-3`).
 
 ### 1.2 Design Responsibilities &amp; Subsystem Boundaries
 
@@ -49,9 +49,9 @@ The Data Flow Diagram directly models the information transformations and data s
 
 The Sequence Diagram models real-time interaction over time across `Sender Client (User A)`, `Messaging Broker API`, `Session &amp; Auth Manager`, `Persistent Data Store`, and `Recipient Client (User B)`, tracing:
 
-* **`FR-02` (Session Verification):** Validating active session token prior to accepting message payload.
+* **`FR-02` (User Authentication &amp; Session Management):** Validating active session token prior to accepting message payload.
 * **`FR-04` (Direct Message Transmission):** Processing 1-on-1 text payload dispatch.
-* **`FR-05` (Message Delivery &amp; Persistence):** Handling dual-path message delivery (real-time push to online recipients vs. persistent storage queuing for offline recipients).
+* **`FR-05` (Group Channel Creation):** Handling dual-path message delivery (real-time push to online recipients vs. persistent storage queuing for offline recipients).
 * **`FR-08` (Durable Storage Persistence):** Synchronous write to persistent database.
 * **`NFR-01` (Delivery Latency):** Enforcing the 1-second real-time delivery benchmark for online recipients.
 

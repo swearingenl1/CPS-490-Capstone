@@ -27,7 +27,7 @@
 *   **FR-02 (User Authentication &amp; Session Management):** The system shall authenticate returning users by verifying submitted passwords against stored salted password hashes prior to granting access to messaging functions.
 *   **FR-03 (Session Logout):** The system shall allow an authenticated user to terminate their active session.
 *   **FR-04 (Direct Message Transmission):** The system shall allow an authenticated user to transmit a direct message to another designated registered user.
-*   **FR-06 (Group Channel Creation):** The system shall allow an authenticated user to create a named group messaging channel and automatically assign that user as the Group Creator.
+*   **FR-05 (Group Channel Creation):** The system shall allow an authenticated user to create a named group messaging channel and automatically assign that user as the Group Creator.
 *   **FR-06 (Group Membership Management):** The system shall allow the Group Creator to add or remove registered users from the group channel roster.
 *   **FR-07 (Group Message Broadcasting):** The system shall distribute messages posted to a group channel to all current active members of that group.
 *   **FR-08 (Durable Storage Persistence):** The system shall commit all user records, group rosters, and transmitted messages to persistent disk storage immediately upon transaction confirmation.
