@@ -2,6 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { Note } from './models/Note.js';
 
+import { PrimerUser } from './models/PrimerUser.js';
+import { authRouter } from './routes/auth.js';
+import { privateNotesRouter } from './routes/privateNotes.js';
+import { requireAuth } from './middleware/requireAuth.js';
+
+import { studyRouter } from './routes/study.js';
+
 const app = express();
 app.use(express.json({ limit: '16kb' }));
 
@@ -14,6 +21,17 @@ app.get('/api/ready', (_req, res) => {
   return res.status(ready ? 200 : 503)
     .json({ status: ready ? 'ready' : 'unavailable' });
 });
+
+function requireDatabase(_req, res, next) {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ error: 'database unavailable' });
+  }
+  next();
+}
+app.use('/api/auth', requireDatabase, authRouter);
+app.use('/api/private/notes', requireDatabase, requireAuth, privateNotesRouter);
+
+app.use('/api/study', requireDatabase, requireAuth, studyRouter);
 
 function noteView(doc) {
   return {
@@ -85,6 +103,7 @@ try {
   await mongoose.connect(mongoUri, {
     serverSelectionTimeoutMS: 5000
   });
+  await PrimerUser.init();  // ensure unique username index exists
   app.listen(3000, '127.0.0.1', () => {
     console.log('Listening on http://127.0.0.1:3000');
   });

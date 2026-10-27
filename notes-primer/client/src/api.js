@@ -29,3 +29,28 @@ export function createNote(text) {
     body: JSON.stringify({ text })
   });
 }
+export async function login(username, password) {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await response.json();
+  if (response.ok === false) {
+    throw new Error(data.error ?? 'Login failed');
+  }
+
+  return data.token;
+}
+export async function loadPrivateNotes(token) {
+  const response = await fetch('/api/private/notes', {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (response.ok === false) {
+    throw new Error(`Private GET failed: ${response.status}`);
+  }
+
+  return (await response.json()).notes;
+}
